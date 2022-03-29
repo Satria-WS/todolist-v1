@@ -8,7 +8,7 @@ let port = 3001;
 const server = http.createServer(app);
 
 //create var item for add item in the list
-var items = [];
+var items = ["Buy Food" , "Cook Food" , "Eat Food"];
 
 //create view engine
 app.set("view engine", "ejs");
@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
 
 
 
-
+/* 
   switch (Daily) {
     case 1:
       // res.send("mon");
@@ -98,7 +98,7 @@ app.get("/", (req, res) => {
       console.log("week");
   }
   //render list.ejs
-
+ */
 });
 
 
