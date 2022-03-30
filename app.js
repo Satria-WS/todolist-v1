@@ -8,98 +8,111 @@ let port = 3001;
 const server = http.createServer(app);
 
 //create var item for add item in the list
-var items = ["Buy Food" , "Cook Food" , "Eat Food"];
+let items = ["Buy Food", "Cook Food", "Eat Food"];
+let workItems = [];
 
 //create view engine
 app.set("view engine", "ejs");
 
 //create urlencoded
 //we've told our app to use body Parser, we can now grab the value of newItem from request.body.newItem;
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(express.static("public"));
 
 
-//create home route
+//create get home route
 app.get("/", (req, res) => {
   //res.send function just 1 piece data , res.write can create multiple piece data
   // res.write("Say Hello World");
-
   let today = new Date();
   let Daily = today.getDay();
   let recentDay;
-
-  var option ={
-      weekday: "long",
-      day: "2-digit",
-      month: "long"
+  let option = {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
   };
+  let day = today.toLocaleDateString("en-US", option);
 
-  var day = today.toLocaleDateString("en-US",option);
-  
-  res.render("list", { kindOfDay: recentDay, newListItem: items });
+  res.render("list", {listTitle: day,newListItem: items});
 
-  //create post for pull the data from post
-  app.post("/",(req,res)=>{
-    var item = req.body.newItem;
-    console.log(item);
-    
-    items.push(item)
-    res.redirect("/");
+});
+  //create post home root for pull the data from post
+  app.post("/", (req, res) => {
+    let item = req.body.newItem;
+
+    if(req.body.list === "Work") {
+      workItems.push(item);
+      res.redirect("/work");
+    } else {
+      items.push(item);
+      res.redirect("/");
+    }
+
   });
 
 
 
+//create get work root
+ app.get("/work",(req,res)=>{
+    res.render("list",{listTitle:"Work List" , newListItem: workItems});
+ });
 
 
-/* 
-  switch (Daily) {
-    case 1:
-      // res.send("mon");
-      // res.write("<h1>Monday</h1>")
-      // res.write("<h1>Monday</h1>");
+
+
+  /* 
+    switch (Daily) {
+      case 1:
         // res.send("mon");
-        recentDay = "mon";
-      console.log("mon");
-    //   res.sendFile(__dirname + "/index.html");
-      break;
+        // res.write("<h1>Monday</h1>")
+        // res.write("<h1>Monday</h1>");
+          // res.send("mon");
+          recentDay = "mon";
+        console.log("mon");
+      //   res.sendFile(__dirname + "/index.html");
+        break;
 
-    case 2:
-      recentDay = day;
-      console.log("tue");
-      
-      break;
+      case 2:
+        recentDay = day;
+        console.log("tue");
+        
+        break;
 
-    case 3:
-    //   res.send("wed");
-     recentDay = "wed";
-      console.log("wed");
-      break;
+      case 3:
+      //   res.send("wed");
+       recentDay = "wed";
+        console.log("wed");
+        break;
 
-    case 4:
-    //   res.send("thurs");
-     recentDay = "thurs";
-      console.log("thurs");
-      break;
+      case 4:
+      //   res.send("thurs");
+       recentDay = "thurs";
+        console.log("thurs");
+        break;
 
-    case 5:
-    //   res.send("fri");
-     recentDay = "fri";
-      console.log("fri");
-      break;
+      case 5:
+      //   res.send("fri");
+       recentDay = "fri";
+        console.log("fri");
+        break;
 
-    case 6:
-    //   res.sendFile(__dirname + "/weekday.html");
-     recentDay = "sat";
-      console.log("sat");
-      break;
+      case 6:
+      //   res.sendFile(__dirname + "/weekday.html");
+       recentDay = "sat";
+        console.log("sat");
+        break;
 
-    default:
-    //   res.sendFile(__dirname + "/weekend.html");
-     recentDay = "week";
-      console.log("week");
-  }
-  //render list.ejs
- */
-});
+      default:
+      //   res.sendFile(__dirname + "/weekend.html");
+       recentDay = "week";
+        console.log("week");
+    }
+    //render list.ejs
+   */
+
 
 
 //listen port

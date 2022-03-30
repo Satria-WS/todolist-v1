@@ -2,35 +2,43 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
     <title>To Do List</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-    <h3 id="demo"></h3>
+    <div class="box" id="heading">
+        <h1 id="timeOfDay">time</h1>
+        <h1> <%= listTitle %></h1>
+    </div>
 
-    <h1> <%= kindOfDay %></h1>
+    <div class="box">
 
-    <ul>
         <!-- <li>Buy Food</li>
         <li>Cook Food</li>
         <li>Eat Food</li> -->
         <!-- <li><%= newListItem %></li> -->
 
         <% for(let i = 0; i <newListItem.length; i++) { %>
-            <li> <%= newListItem[i] %> </li>
-       <% }  %>
+        <div class="item">
+            <input type="checkbox">
+            <p> <%= newListItem[i] %> </p>
+        </div>
 
-    </ul>
-    <form class="" action="/" method="post">
-        <input type="text" name="newItem">
+        <% } %>
+        <form class="item" action="/" method="post">
+            <input type="text" name="newItem" placeholder="New Item" autocomplete="off">
+            <button type="submit" name="list" value= <%= listTitle %>  >+</button>
+        </form>
+    </div>
 
-        <button type="submit" name="button">Add</button>
-    </form>
+
 
     <script>
-        setInterval(() => {
-            document.getElementById("demo").innerHTML = new Date().toLocaleTimeString();
-        }, 1000)
+    var time = setInterval(()=> {
+    document.getElementById("timeOfDay").innerHTML = new Date().toLocaleTimeString();
+ }, 1000);
     </script>
 </body>
 
